@@ -1,6 +1,9 @@
 require("dotenv").config();
 const { Sequelize } = require("sequelize");
 
+const driverModel = require('./models/driverModel');
+const teamsModel = require('./models/teamsModel')
+
 const fs = require('fs');
 const path = require('path');
 const {
@@ -28,10 +31,15 @@ let entries = Object.entries(sequelize.models);
 let capsEntries = entries.map((entry) => [entry[0][0].toUpperCase() + entry[0].slice(1), entry[1]]);
 sequelize.models = Object.fromEntries(capsEntries);
 
-const { Driver } = sequelize.models;
+driverModel(sequelize);
+teamsModel(sequelize);
+
+const { Driver, Teams } = sequelize.models;
 
 // Aca vendrian las relaciones
-// Product.hasMany(Reviews);
+
+Driver.belongsToMany(Teams, {through: 'DriverTeams'})
+Teams.belongsToMany(Driver, {through: 'DriverTeams'})
 
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
