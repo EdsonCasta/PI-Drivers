@@ -1,23 +1,23 @@
-const { getDriverById } = require('../controllers/driverController')
-
-// const URL = "http://localhost:5000/drivers"
+    const { getDriverById, 
+    getAllDrivers,
+    getDriverByName 
+} = require('../controllers/driverController')
 
 const driversHandler = async(req, res) => {
+    
     try {
-        const response = await axios.get("http://localhost:5000/drivers");
-console.log(response);
-        if(response.data && Array.isArray(response.data)) {
-            res.status(200).json(response)
-        }
+        const response = await getAllDrivers();
+
+        res.status(200).json(response)
     } catch (error) {
-        res.status(500).send("Error de la solicitud a la api")  
+        res.status(500).json({error: error.message})  
     }
 }
 
 const driverDetailHandler = async(req, res) => {
     const { id } = req.params;
 
-    const source = isNaN(id) ? "DB" : "API";
+    const source = isNaN(id) ? "bd" : "api";
 
     try {
         const response = await getDriverById(id, source);
@@ -27,8 +27,14 @@ const driverDetailHandler = async(req, res) => {
     }
 }
   
-const firstDriversHandler = (req, res) => {
-    res.status(200).send("llegue")  
+const firstDriversHandler = async(req, res) => {
+    const { forename } = req.query;
+    try {
+        const response = await getDriverByName(forename);
+        res.status(200).json(response);
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
 }  
 
 module.exports = { driversHandler, 

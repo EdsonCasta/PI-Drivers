@@ -7,7 +7,7 @@ const { driversHandler,
 const driversRouter = Router();
 
 driversRouter.get('/', driversHandler);
-driversRouter.get('/:idDriver', driverDetailHandler);
-driversRouter.get('/name?="..."', firstDriversHandler);
+driversRouter.get('/:id', driverDetailHandler);
+driversRouter.get('/?forename=', firstDriversHandler);
 
 module.exports = driversRouter;
