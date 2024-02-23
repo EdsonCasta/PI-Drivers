@@ -30,7 +30,7 @@ const driverDetailHandler = async(req, res) => {
 const firstDriversHandler = async(req, res) => {
     const { forename } = req.query;
     try {
-        const response = await getDriverByName(forename);
+        const response = forename ? await getDriverByName(forename) : await getAllDrivers();
         res.status(200).json(response);
     } catch (error) {
         res.status(400).json({error: error.message})
