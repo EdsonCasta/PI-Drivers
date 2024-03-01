@@ -2,10 +2,10 @@ const { createDriverDb } = require("../controllers/driverController");
 
 const createDriverHandler = async(req, res) => {
     
-    const { FirstName, LastName, Description, Image, Nacionality, BirthDate } = req.body;
+    const { Forename, Surname, Description, Image, Nationality, BirthDate } = req.body;
     try {
-        const response = await createDriverDb(FirstName, 
-            LastName, Description, Image, Nacionality, BirthDate)
+        const response = await createDriverDb(Forename, 
+            Surname, Description, Image, Nationality, BirthDate)
 
         res.status(200).json(response)    
     } catch (error) {

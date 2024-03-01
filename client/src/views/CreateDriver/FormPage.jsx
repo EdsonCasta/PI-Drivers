@@ -1,7 +1,15 @@
+import React from "react";
+import { Link } from "react-router-dom";
+import Form from "../../components/Form/form";
+
 const FormPage = () => {
   return (
     <div>
-        <h1>Estas en el formulario</h1>
+      <Link to={"/home"}>
+        <button>Atras</button>
+      </Link>
+      <h1>CREATE A NEW DRIVER</h1>
+      <Form />
     </div>
   );
 };

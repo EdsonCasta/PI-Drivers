@@ -10,11 +10,11 @@ module.exports = (sequelize) => {
       primaryKey: true,
       allowNull: false
     },
-    FirstName: {
+    Forename: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    LastName: {
+    Surname: {
       type: DataTypes.STRING,
       allowNull: false
     },
@@ -24,7 +24,7 @@ module.exports = (sequelize) => {
     Image: {
       type: DataTypes.STRING
     },
-    Nacionality: {
+    Nationality: {
       type: DataTypes.STRING
     },
     BirthDate: {

@@ -13,10 +13,10 @@ const getAllDrivers = async () => {
   };
 
 
-const createDriverDb = async(FirstName, LastName, 
-    Description, Image, Nacionality, BirthDate) => {
-    return await Driver.create({ FirstName, LastName, 
-        Description, Image, Nacionality, BirthDate })
+const createDriverDb = async(Forename, Surname, 
+    Description, Image, Nationality, BirthDate) => {
+    return await Driver.create({ Forename, Surname, 
+        Description, Image, Nationality, BirthDate })
 };
 
 
@@ -31,11 +31,13 @@ const getDriverById = async(id, source) => {
 
 const getDriverByName = async (forename) => {
     
-    const driversDB = await Driver.findAll({where: {FirstName: forename}});
+    const driversDB = await Driver.findAll({where: {Forename: forename}});
 
     const driversApi = await axios.get(`http://localhost:5000/drivers?forename=${forename}`);
 
-    const driversFiltered = driversApi.data.filter(drivers => drivers.name.forename === forename)
+    const driversFiltered = driversApi.data.filter(driver => {
+      return driver.name && driver.name.forename.toLowerCase() === forename.toLowerCase();
+    })
 
     return [...driversDB, ...driversFiltered];
 };    
