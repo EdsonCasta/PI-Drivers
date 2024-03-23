@@ -13,9 +13,9 @@ const getAllDrivers = async () => {
   };
 
 
-const createDriverDb = async(Forename, Surname, 
+const createDriverDb = async(id, Forename, Surname, 
     Description, Image, Nationality, BirthDate) => {
-    return await Driver.create({ Forename, Surname, 
+    return await Driver.create({ id, Forename, Surname, 
         Description, Image, Nationality, BirthDate })
 };
 
@@ -40,6 +40,13 @@ const getDriverByName = async (forename) => {
     })
 
     return [...driversDB, ...driversFiltered];
-};    
+};
 
-module.exports = { createDriverDb, getDriverById, getAllDrivers, getDriverByName };
+const delDriver = async (id) => {
+
+  const borrar = await Driver.destroy({ where: { id }});
+  
+  return borrar;
+};
+
+module.exports = { delDriver, createDriverDb, getDriverById, getAllDrivers, getDriverByName };

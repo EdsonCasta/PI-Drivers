@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { createDriverHandler } = require('../handlers/postDriverHandler');
+const { createDriverHandler, deleteDriver } = require('../handlers/postDriverHandler');
 const { arrayTeamsHandler } = require('../handlers/getTeamsHandler');
 const { driversHandler,
   driverDetailHandler
@@ -8,6 +8,7 @@ const { driversHandler,
 router.get('/drivers', driversHandler);
 router.get('/drivers/:id', driverDetailHandler);
 router.post('/drivers', createDriverHandler);
-router.get('/teams', arrayTeamsHandler)
+router.get('/teams', arrayTeamsHandler);
+router.delete('/drivers/:id', deleteDriver);
 
 module.exports = router;
