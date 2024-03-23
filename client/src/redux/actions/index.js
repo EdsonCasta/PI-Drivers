@@ -4,7 +4,7 @@ export const GET_DRIVERS = 'GET_DRIVERS';
 export const GET_BY_NAME = 'GET_BY_NAME';
 export const FILTER = 'FILTER';
 export const ORDER = 'ORDER';
-export const GET_PAGINATED_DRIVERS = 'GET_PAGINATED_DRIVERS';
+export const GET_PAGINATION_DRIVERS = 'GET_PAGINATION_DRIVERS';
 
 export function getDrivers() {
     return async function (dispatch) {
@@ -27,35 +27,31 @@ export function getByName(name) {
     }
 }
 
-export function filterCards(teams) {
+export function filterCards() {
     return async function (dispatch) {
-        const response = await axios(`http://localhost:3001/teams`)
+        const response = await axios(`http://localhost:3001/teams`);
     return dispatch({
-        type: "FILTER",
-        payload: response.data
+        type: FILTER,
+        payload: response
     })
 }
 }
 
-export function orderCards(order) {
+export function orderCards(orden, tipo) {
     return {
         type: ORDER,
-        payload: order
+        payload: { orden, tipo }
     }
 }
 
-export function getPaginatedDrivers(page) {
-    return async function (dispatch) {
-        try {
-            const { driversPerPage } = initialState.pagination;
-            const response = await axios.get(`http://localhost:5000/drivers?page=${page}&perPage=${driversPerPage}`)
-            dispatch({
-                type: GET_PAGINATED_DRIVERS,
-                payload: { drivers: response.data, currentPage: page },
-            });
-        } catch (error) {
-            console.error('Error al obtener los drivers paginados', error)
-        }
-    };
-}
+export const getPaginationDrivers = (drivers, pagination) => {
+    const numberDrivers = 9;
+    const offset = ((pagination - 1) * numberDrivers);
+    const limit = offset + numberDrivers;
+    const pagina = drivers.slice(offset, limit);
+    return {
+      type: "GET_PAGINATION_DRIVERS",
+      payload: pagina
+    }
+  };
 

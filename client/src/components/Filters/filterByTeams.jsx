@@ -1,9 +1,11 @@
 import React from "react";
-import { connect, useDispatch } from "react-redux";
-import Card from "../Card/card";
+import { useDispatch, useSelector } from "react-redux";
 import { filterCards } from "../../redux/actions";
 
-function Filter({ team }) {
+function Filter() {
+
+    const allTeams = useSelector(state => state.allTeams);
+    // console.log(allTeams);
 
     const dispatch = useDispatch()
 
@@ -18,33 +20,10 @@ function Filter({ team }) {
                     defaultValue='filterTeams'
                     onChange={handleFilter}>
                     <option value="filterTeams" disabled='disabled'>teams...</option>
-                    <option value="Ferrari">Ferrari</option>
-                    <option value="Bmw">Bmw</option>
-                    <option value="Renault">Renault</option>
-                    <option value="Lotus">Lotus</option>
-                    <option value="Mc claren">Mc claren</option>
                 </select>
             </div>
-            {team.map(driver => (
-                <Card
-                    key={driver.id}
-                    id={driver.id}
-                    name={driver.name}
-                    nationality={driver.nationality}
-                    image={driver.image}
-                    description={driver.description}
-                    birthdate={driver.birthdate}
-                    teams={driver.teams}
-                />
-            ))}
         </div>
     )
-}
+};
 
-function mapStateToProps(state) {
-    return {
-        team: state.team
-    }
-}
-
-export default connect(mapStateToProps)(Filter)
+export default Filter;

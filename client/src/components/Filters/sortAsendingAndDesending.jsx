@@ -1,47 +1,37 @@
 import React from "react";
-import { connect, useDispatch } from "react-redux";
-import Card from "../Card/card";
+import { useDispatch } from "react-redux";
 import { orderCards } from "../../redux/actions";
 
-function Order({ order }) {
+function Order() {
 
     const dispatch = useDispatch()
 
-    const handleOrder = (evento) => {
-        dispatch(orderCards(evento.target.value))
-    }
+    const handleAlfabetico = (evento) => {
+        dispatch(orderCards(evento.target.value, "Alfabetico"))
+    };
+
+    const handleNacimiento = (evento) => {
+        dispatch(orderCards(evento.target.value, "Nacimiento"))
+    };
 
     return (
         <div>
-            <div>
-                <select name="order"
-                    defaultValue='orderDrivers'
-                    onChange={handleOrder}>
-                    <option value="orderDrivers" disabled='disabled'>order...</option>
-                    <option value="ascendente">Ascendente</option>
-                    <option value="descendente">Descendente</option>
+             <div className='filter'>
+                <select className="filter-select" name="alfabetico" defaultValue="alfabetico" onChange={handleAlfabetico}>
+                    <option value="alfabetico" disabled="disabled">Alfabético...</option>
+                    <option value="desc">A-Z</option>
+                    <option value="asc">Z-A</option>
                 </select>
             </div>
-            {order && order.map(driver => (
-                <Card
-                    key={driver.id}
-                    id={driver.id}
-                    name={driver.name}
-                    nationality={driver.nationality}
-                    image={driver.image}
-                    description={driver.description}
-                    birthdate={driver.birthdate}
-                    teams={driver.teams}
-                />
-            ))}
+            <div className='filter'>
+                <select className="filter-select" name="Nacimiento" defaultValue="Nacimiento" onChange={handleNacimiento}>
+                    <option value="Nacimiento" disabled="disabled">Nacimiento...</option>
+                    <option value="desc">Mayor</option>
+                    <option value="asc">Menor</option>
+                </select>
+            </div>
         </div>
     )
-}
+};
 
-function mapStateToProps(state) {
-    return {
-        order: state.order
-    }
-}
-
-export default connect(mapStateToProps)(Order)
+export default Order;

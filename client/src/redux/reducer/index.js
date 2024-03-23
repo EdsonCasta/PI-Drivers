@@ -1,18 +1,11 @@
-import { GET_DRIVERS, GET_BY_NAME, FILTER, ORDER, GET_PAGINATED_DRIVERS } from "../actions";
+import { GET_DRIVERS, GET_BY_NAME, FILTER, ORDER, GET_PAGINATION_DRIVERS } from "../actions";
 
-let initialState = {
-    allDrivers: [], driversCopy: [], team: [], pagination: {
-        currentPage: 1,
-        driversPerPage: 9
-    }
-}
-console.log("initialState:", initialState);
-
+let initialState = { allDrivers: [], driversCopy: [], allTeam: [], pagination: [] };
 
 function rootReducer(state = initialState, action) {
+    // console.log(action);
     switch (action.type) {
         case GET_DRIVERS:
-            // console.log("GET_DRIVERS Action:", action);
             return {
                 ...state,
                 allDrivers: action.payload,
@@ -24,47 +17,32 @@ function rootReducer(state = initialState, action) {
                 allDrivers: action.payload
             };
         case FILTER:
-            const teamsFiltered = state.allDrivers.filter(driver => driver.teams === action.payload)
             return {
-                ...state,
-                team: action.payload === 'All' ? state.allDrivers : teamsFiltered
+                ...state
             };
         case ORDER:
-            const orderDrivers = [...state.allDrivers];
-            if (action.payload === 'ascendente') {
-                orderDrivers.sort((a, b) => {
-                    if (a && b && typeof a.forename === 'string' && typeof b.forename === 'string') {
-                        return a.forename.localeCompare(b.forename);
-                    } else {
-                        return 0;
-                    }
-                });
-            } else if (action.payload === 'descendente') {
-                orderDrivers.sort((a, b) => {
-                    if (a && b && typeof a.forename === 'string' && typeof b.forename === 'string') {
-                        return b.forename.localeCompare(a.forename);
-                    } else {
-                        return 0;
-                    }
-                });
-            }
-            console.log("ORDER Action:", action.payload);
-            return {
-                ...state,
-                allDrivers: orderDrivers,
+            const { orden, tipo } = action.payload;
+            if (tipo === "Alfabetico") {
+                if (orden === "desc") state.driversCopy.sort((a, b) => a.name.forename.localeCompare(b.name.forename));
+                if (orden === "asc") state.driversCopy.sort((a, b) => b.name.forename.localeCompare(a.name.forename));
             };
-        case GET_PAGINATED_DRIVERS:
+            if (tipo === "Nacimiento") {
+                if (orden === "desc") state.driversCopy.sort((a, b) => new Date(b.dob) - new Date(a.dob));
+                if (orden === "asc") state.driversCopy.sort((a, b) => new Date(a.dob) - new Date(b.dob));
+            };
             return {
                 ...state,
-                pagination: {
-                    ...state.pagination,
-                    currentPage: action.payload
-                },
+                allDrivers: [...state.driversCopy]
+            };
+        case GET_PAGINATION_DRIVERS:
+            return {
+                ...state,
+                pagina: action.payload
             };
 
         default:
             return state;
     }
-}
+};
 
 export default rootReducer;

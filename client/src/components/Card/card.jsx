@@ -3,7 +3,6 @@ import "./card.styles.css";
 
 const Card = ({driver}) => {
   const { image, name, teams, id } = driver;
-
   return (
       <Link to={ `/home/${id}`} style={{textDecoration: 'none', color: 'inherit'}}>
     <div className="card-container">
