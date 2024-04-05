@@ -9,7 +9,7 @@ function DetailPage() {
   useEffect(() => {
     const fetchDriver = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/drivers/${id}`);
+        const response = await axios.get(`http://localhost:3001/drivers/${id}`);
         setDriver(response.data);
       } catch (error) {
         console.error('Error al obtener los detalles del conductor:', error.message);

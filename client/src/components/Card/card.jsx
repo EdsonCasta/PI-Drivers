@@ -6,7 +6,7 @@ const Card = ({driver}) => {
   return (
       <Link to={ `/home/${id}`} style={{textDecoration: 'none', color: 'inherit'}}>
     <div className="card-container">
-      {driver.image && <img src={image.url} alt={name} />}
+      {driver.image && <img src={image} alt={name} />}
       {driver.name && <h2>{ name.forename + ' ' + name.surname }</h2>}
       {driver.teams && <p>{ teams }</p>}
     </div>

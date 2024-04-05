@@ -1,4 +1,4 @@
-import { GET_DRIVERS, GET_BY_NAME, FILTER, ORDER, GET_PAGINATION_DRIVERS } from "../actions";
+import { GET_DRIVERS, GET_BY_NAME, FILTER_TEAMS, ORDER, GET_PAGINATION_DRIVERS } from "../actions";
 
 let initialState = { allDrivers: [], driversCopy: [], allTeam: [], pagination: [] };
 
@@ -16,9 +16,10 @@ function rootReducer(state = initialState, action) {
                 ...state,
                 allDrivers: action.payload
             };
-        case FILTER:
+        case FILTER_TEAMS:
             return {
-                ...state
+                ...state,
+                allTeam: action.payload
             };
         case ORDER:
             const { orden, tipo } = action.payload;

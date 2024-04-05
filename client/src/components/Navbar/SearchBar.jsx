@@ -1,6 +1,7 @@
 import './search.styles.css'
 
 function  SearchBar({ handleChange, handleSubmit }) {
+
     return (
       <div className="search-box">
         <form onChange={ handleChange } >

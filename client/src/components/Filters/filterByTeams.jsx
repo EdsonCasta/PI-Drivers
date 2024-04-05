@@ -4,7 +4,7 @@ import { filterCards } from "../../redux/actions";
 
 function Filter() {
 
-    const allTeams = useSelector(state => state.allTeams);
+    const allTeams = useSelector(state => state.allTeam);
     // console.log(allTeams);
 
     const dispatch = useDispatch()

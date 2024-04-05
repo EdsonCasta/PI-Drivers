@@ -10,6 +10,8 @@ const getAllTeams = async () => {
 
         const teamsData = teamsApi.map(drivers => drivers.teams);
 
+        await Teams.bulkCreate(teamsData);
+
         return teamsData;
     }
     return teamsDB;
