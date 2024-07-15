@@ -1,8 +1,10 @@
 import Card from "../Card/card";
 import "./cards.styles.css";
 
-function Cards({pagina}) {
-  const driversList = pagina;
+function Cards({alldrivers}) {
+
+  const driversList = alldrivers;
+  
   return (
     <div className="cards-list">
       {driversList?.map((driver) => (

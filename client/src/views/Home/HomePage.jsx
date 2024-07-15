@@ -6,13 +6,16 @@ import { Link } from "react-router-dom";
 import SearchBar from "../../components/Navbar/SearchBar";
 import Filter from "../../components/Filters/filterByTeams"
 import Order from "../../components/Filters/sortAsendingAndDesending"
-import Pagination from "../../components/Pagination/pagination";
+// import Pagination from "../../components/Pagination/pagination";
 
 import "./home.styles.css"
+import Cards from "../../components/Cards/cards";
 
 function HomePage() {
 
   const dispatch = useDispatch();
+
+  const alldrivers = useSelector(state => state.allDrivers);
   
   const [searchString, setSearchString] = useState("");
 
@@ -42,7 +45,8 @@ function HomePage() {
       <SearchBar handleChange={handleChange} handleSubmit={handleSubmit} />
       <Filter />
       <Order />
-      <Pagination />
+      {/* <Pagination /> */}
+      <Cards alldrivers={alldrivers}/>
     </div>
   );
 };

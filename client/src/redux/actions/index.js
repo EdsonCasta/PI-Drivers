@@ -4,7 +4,7 @@ export const GET_DRIVERS = 'GET_DRIVERS';
 export const GET_BY_NAME = 'GET_BY_NAME';
 export const FILTER_TEAMS = 'FILTER_TEAMS';
 export const ORDER = 'ORDER';
-export const GET_PAGINATION_DRIVERS = 'GET_PAGINATION_DRIVERS';
+// export const GET_PAGINATION_DRIVERS = 'GET_PAGINATION_DRIVERS';
 
 export function getDrivers() {
     return async function (dispatch) {
@@ -49,14 +49,14 @@ export function orderCards(orden, tipo) {
     };
 };
 
-export const getPaginationDrivers = (drivers, pagination) => {
-    const numberDrivers = 9;
-    const offset = ((pagination - 1) * numberDrivers);
-    const limit = offset + numberDrivers;
-    const pagina = drivers.slice(offset, limit);
-    return {
-        type: "GET_PAGINATION_DRIVERS",
-        payload: pagina
-    };
-};
+// export const getPaginationDrivers = (drivers, pagination) => {
+//     const numberDrivers = 9;
+//     const offset = ((pagination - 1) * numberDrivers);
+//     const limit = offset + numberDrivers;
+//     const pagina = drivers.slice(offset, limit);
+//     return {
+//         type: "GET_PAGINATION_DRIVERS",
+//         payload: pagina
+//     };
+// };
 

@@ -1,18 +1,19 @@
-const { createDriverDb, delDriver } = require("../controllers/driverController");
+const { createDriverDb } = require("../controllers/createDriverController");
+const { delDriver } = require("../controllers/driverController");
 
 const createDriverHandler = async(req, res) => {
     
-    const { ID, Forename, Surname, Description, Image, Nationality, BirthDate } = req.body;
+    const { ID, Forename, Surname, Description, Image, Nationality, BirthDate, Teams } = req.body;
     try {
 
-        if( ![ Forename, Surname, Description, Image, Nationality, BirthDate ].every(Boolean) ) {
+        if( ![ Forename, Surname, Description, Image, Nationality, BirthDate, Teams ].every(Boolean) ) {
             return res.status(401).json({ message: 'Faltan datos' });
         };
 
         const response = await createDriverDb(ID, Forename, 
-            Surname, Description, Image, Nationality, BirthDate)
+            Surname, Description, Image, Nationality, BirthDate, Teams)
 
-        res.status(200).json(response)    
+        res.status(201).json(response)    
     } catch (error) {
         res.status(500).json({error: error.message})
     }    

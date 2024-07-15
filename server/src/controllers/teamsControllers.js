@@ -2,19 +2,32 @@ const axios = require('axios');
 const { Teams } = require('../db');
 
 const getAllTeams = async () => {
-    const teamsDB = await Teams.findAll();
+    try {
 
-    if (teamsDB.length === 0) {
+        const count = await Teams.count();
 
-        const teamsApi = (await axios.get('http://localhost:5000/drivers')).data;
+        if (count === 0) {
 
-        const teamsData = teamsApi.map(drivers => drivers.teams);
+            const teamsApi = (await axios.get('http://localhost:5000/drivers')).data;
+            const teamsArray = teamsApi.map(team => team.teams).filter(team => typeof team === 'string');
+            const uniqueTeams = new Set(teamsArray.flatMap(teamsString => teamsString.split(',').map(team => team.trim())));
 
-        await Teams.bulkCreate(teamsData);
+            const teamsList = Array.from(uniqueTeams);
 
-        return teamsData;
+            for (const teamName of teamsList) {
+                await Teams.findOrCreate({
+                    where: { Name: teamName }
+                });
+            }
+
+            console.log('Teams successfully saved to the database.');
+            return teamsList;
+        } else {
+            console.log('Teams already exist in the database.');
+        }
+    } catch (error) {
+        console.error('Error fetching and saving teams:', error);
     }
-    return teamsDB;
 };
 
 module.exports = { getAllTeams };
