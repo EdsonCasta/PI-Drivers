@@ -1,37 +1,61 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { orderCards } from "../../redux/actions";
 
-function Order() {
+function Order({ alfabeticoOrder, setAlfabeticoOrder, birthdateOrder, setBirthdateOrder }) {
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (alfabeticoOrder !== "alfabetico") {
+            setBirthdateOrder("Nacimiento");
+        }
+    }, [alfabeticoOrder]);
+
+    useEffect(() => {
+        if (birthdateOrder !== "Nacimiento") {
+            setAlfabeticoOrder("alfabetico");
+        }
+    }, [birthdateOrder]);
 
     const handleAlfabetico = (evento) => {
-        dispatch(orderCards(evento.target.value, "Alfabetico"))
+        setAlfabeticoOrder(evento.target.value);
+        dispatch(orderCards(evento.target.value, "Alfabetico"));
     };
 
     const handleNacimiento = (evento) => {
-        dispatch(orderCards(evento.target.value, "Nacimiento"))
+        setBirthdateOrder(evento.target.value);
+        dispatch(orderCards(evento.target.value, "Nacimiento"));
     };
 
     return (
         <div>
-             <div className='filter'>
-                <select className="filter-select" name="alfabetico" defaultValue="alfabetico" onChange={handleAlfabetico}>
-                    <option value="alfabetico" disabled="disabled">Alfabético...</option>
+            <div className='filter'>
+                <select 
+                    className="filter-select" 
+                    name="alfabetico" 
+                    value={alfabeticoOrder} 
+                    onChange={handleAlfabetico}
+                >
+                    <option value="alfabetico" disabled>Alfabético...</option>
                     <option value="desc">A-Z</option>
                     <option value="asc">Z-A</option>
                 </select>
             </div>
             <div className='filter'>
-                <select className="filter-select" name="Nacimiento" defaultValue="Nacimiento" onChange={handleNacimiento}>
-                    <option value="Nacimiento" disabled="disabled">Nacimiento...</option>
-                    <option value="desc">Mayor</option>
-                    <option value="asc">Menor</option>
+                <select 
+                    className="filter-select" 
+                    name="Nacimiento" 
+                    value={birthdateOrder} 
+                    onChange={handleNacimiento}
+                >
+                    <option value="Nacimiento" disabled>Nacimiento...</option>
+                    <option value="desc">Menor</option>
+                    <option value="asc">Mayor</option>
                 </select>
             </div>
         </div>
-    )
-};
+    );
+}
 
 export default Order;

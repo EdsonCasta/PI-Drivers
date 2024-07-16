@@ -1,29 +1,34 @@
-import React from "react";
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { filterCards } from "../../redux/actions";
+import { filterTeams, getTeams } from "../../redux/actions";
 
-function Filter() {
+function Filter({ resetOrder }) {
 
     const allTeams = useSelector(state => state.allTeam);
-    // console.log(allTeams);
+    const dispatch = useDispatch();
 
-    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(getTeams());
+    }, [dispatch]);
 
     const handleFilter = (evento) => {
-        dispatch(filterCards(evento.target.value))
+        const selectedTeam = evento.target.value;
+        dispatch(filterTeams(selectedTeam));
+        resetOrder();  // Llama a la función para reiniciar los filtros de ordenamiento
     }
 
     return (
-        <div>
+       <div>
             <div>
-                <select name="filter"
-                    defaultValue='filterTeams'
-                    onChange={handleFilter}>
+                <select name="filter" defaultValue='filterTeams' onChange={handleFilter}>
                     <option value="filterTeams" disabled='disabled'>teams...</option>
+                    {allTeams && allTeams.map(team => (
+                        <option key={team} value={team}>{team}</option>
+                    ))}
                 </select>
             </div>
         </div>
-    )
+    );
 };
 
 export default Filter;

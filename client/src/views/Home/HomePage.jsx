@@ -6,18 +6,18 @@ import { Link } from "react-router-dom";
 import SearchBar from "../../components/Navbar/SearchBar";
 import Filter from "../../components/Filters/filterByTeams"
 import Order from "../../components/Filters/sortAsendingAndDesending"
+import Cards from "../../components/Cards/cards";
 // import Pagination from "../../components/Pagination/pagination";
 
 import "./home.styles.css"
-import Cards from "../../components/Cards/cards";
 
 function HomePage() {
 
   const dispatch = useDispatch();
-
-  const alldrivers = useSelector(state => state.allDrivers);
-  
+  const alldrivers = useSelector(state => state.filteredDrivers);
   const [searchString, setSearchString] = useState("");
+  const [alfabeticoOrder, setAlfabeticoOrder] = useState("alfabetico");
+  const [birthdateOrder, setBirthdateOrder] = useState("Nacimiento");
 
   function handleChange(event) {
     event.preventDefault();
@@ -28,6 +28,11 @@ function HomePage() {
     event.preventDefault();
     dispatch(getByName(searchString))
   }
+
+  const resetOrder = () => {
+    setAlfabeticoOrder("alfabetico");
+    setBirthdateOrder("Nacimiento");
+  };
 
   useEffect(() => {
     dispatch(getDrivers());
@@ -43,10 +48,15 @@ function HomePage() {
         <button>Create by driver</button>
       </Link>
       <SearchBar handleChange={handleChange} handleSubmit={handleSubmit} />
-      <Filter />
-      <Order />
+      <Filter resetOrder={resetOrder} />
+      <Order
+        alfabeticoOrder={alfabeticoOrder}
+        setAlfabeticoOrder={setAlfabeticoOrder}
+        birthdateOrder={birthdateOrder}
+        setBirthdateOrder={setBirthdateOrder}
+      />
+      <Cards alldrivers={alldrivers} />
       {/* <Pagination /> */}
-      <Cards alldrivers={alldrivers}/>
     </div>
   );
 };
