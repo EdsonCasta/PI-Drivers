@@ -1,4 +1,10 @@
-import { GET_DRIVERS, GET_BY_NAME, GET_TEAMS, FILTER_BY_TEAM, ORDER, GET_PAGINATION_DRIVERS } from "../actions";
+import {
+    GET_DRIVERS, GET_BY_NAME,
+    GET_TEAMS, FILTER_BY_TEAM, ORDER,
+    GET_PAGINATION_DRIVERS,
+    CREATE_DRIVER_ERROR, CREATE_DRIVER_SUCCESS, 
+    CREATE_DRIVER_REQUEST, RESET_DRIVER
+} from "../actions";
 
 let initialState = {
     allDrivers: [],
@@ -7,7 +13,10 @@ let initialState = {
     filteredDrivers: [],
     selectedTeam: '',
     order: { orden: '', tipo: '' },
-    pagina: []
+    pagina: [],
+    loading: false,
+    driver: null,
+    error: null
 };
 
 function applyFilters(drivers, team, order) {
@@ -69,11 +78,35 @@ function rootReducer(state = initialState, action) {
                 filteredDrivers: applyFilters(state.driversCopy, state.selectedTeam, { orden, tipo }),
                 pagina: applyPagination(applyFilters(state.driversCopy, state.selectedTeam, { orden, tipo }), 1)
             };
-            
         case GET_PAGINATION_DRIVERS:
             return {
                 ...state,
                 pagina: action.payload
+            };
+        case CREATE_DRIVER_REQUEST:
+            return {
+                ...state,
+                loading: true,
+                error: null,
+                driver: null,
+            };
+        case CREATE_DRIVER_SUCCESS:
+            return {
+                ...state,
+                driver: action.payload,
+                loading: false,
+                error: null,
+            };
+        case CREATE_DRIVER_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            };
+        case RESET_DRIVER:
+            return {
+                ...state,
+                driver: null,
             };
 
         default:

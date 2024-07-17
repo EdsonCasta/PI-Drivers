@@ -1,16 +1,8 @@
-const { Drivers } = require('../db');
+const axios = require('axios');
 
-const delDriver = async (id) => {
-
-    const driver = await Drivers.findByPk(id);
-
-    if (!driver) {
-        throw new Error('Conductor no encontrado');
-    }
-
-    await driver.destroy();
-    
-    return driver;
+const delDriverFromAPI = async (id) => {
+    const response = await axios.delete(`http://localhost:5000/drivers/${id}`);
+    return response.data;
 };
 
-module.exports = { delDriver };
+module.exports = { delDriverFromAPI };

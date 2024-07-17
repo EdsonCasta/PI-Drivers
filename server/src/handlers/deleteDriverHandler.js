@@ -1,15 +1,15 @@
-const { delDriver } = require('../controllers/deleteDriverController');
+const { delDriverFromAPI } = require('../controllers/deleteDriverController');
 
 const deleteDriver = async (req, res) => {
-
     const { id } = req.params;
 
     try {
-        const response = await delDriver(id);
-        
-        res.status(200).json({ message: "Conductor eliminado con éxito", response });
-    } catch (error) {
-        res.status(400).json({ error: error.message });
+        // Intentar eliminar el conductor de la API externa
+        const response = await delDriverFromAPI(id);
+        return res.status(200).json({ message: "Conductor eliminado de la API externa con éxito", apiResponse: response });
+    } catch (apiError) {
+        console.error('Error al eliminar de la API externa:', apiError);
+        return res.status(500).json({ error: 'Error al eliminar el conductor de la API externa' });
     }
 };
 
