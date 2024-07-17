@@ -1,9 +1,9 @@
 import Card from "../Card/card";
 import "./cards.styles.css";
 
-function Cards({alldrivers}) {
+function Cards({ pagina }) {
 
-  const driversList = alldrivers;
+  const driversList = pagina;
   
   return (
     <div className="cards-list">

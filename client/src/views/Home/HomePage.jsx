@@ -6,15 +6,13 @@ import { Link } from "react-router-dom";
 import SearchBar from "../../components/Navbar/SearchBar";
 import Filter from "../../components/Filters/filterByTeams"
 import Order from "../../components/Filters/sortAsendingAndDesending"
-import Cards from "../../components/Cards/cards";
-// import Pagination from "../../components/Pagination/pagination";
+import Pagination from "../../components/Pagination/pagination";
 
 import "./home.styles.css"
 
 function HomePage() {
 
   const dispatch = useDispatch();
-  const alldrivers = useSelector(state => state.filteredDrivers);
   const [searchString, setSearchString] = useState("");
   const [alfabeticoOrder, setAlfabeticoOrder] = useState("alfabetico");
   const [birthdateOrder, setBirthdateOrder] = useState("Nacimiento");
@@ -55,8 +53,7 @@ function HomePage() {
         birthdateOrder={birthdateOrder}
         setBirthdateOrder={setBirthdateOrder}
       />
-      <Cards alldrivers={alldrivers} />
-      {/* <Pagination /> */}
+      <Pagination />
     </div>
   );
 };

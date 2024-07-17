@@ -1,87 +1,103 @@
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from "react-redux";
+import Cards from "../Cards/cards";
+import { getPaginationDrivers } from '../../redux/actions';
 
+function Pagination() {
+    
+    const [page, setPage] = useState(1);
+    const allDrivers = useSelector(state => state.filteredDrivers);
+    const selectPagina = useSelector(state => state.pagina);
+    const dispatch = useDispatch();
 
-// import React from 'react';
-// import { useState, useEffect } from "react";
-// import { useSelector, useDispatch } from "react-redux";
+    const driversPerPage = 9; // Número de drivers por página
+    const pagesPerBatch = 10; // Número de páginas a mostrar a la vez
+    let numPage = Math.ceil(allDrivers.length / driversPerPage);
 
-// import Cards from "../Cards/cards";
-// import { getPaginationDrivers } from '../../redux/actions';
+    useEffect(() => {
+        if (allDrivers.length > 0) {
+            dispatch(getPaginationDrivers(allDrivers, page));
+        }
+    }, [allDrivers, page, dispatch]);
 
-// function Pagination() {
-//   const [page, setPage] = useState(1)
-//     const [array, setArray] = useState([])
-//     const [offset, setOffSet] = useState(0)
-//     const allDrivers = useSelector(state => state.allDrivers);
-//     const selectPagina = useSelector(state => state.pagina);
+    useEffect(() => {
+        setPage(1); // Resetear la página a 1 cuando cambian los drivers filtrados
+    }, [allDrivers]);
 
-//     const dispatch = useDispatch();
+    const handlePageChange = (newPage) => {
+        if (newPage >= 1 && newPage <= numPage) {
+            setPage(newPage);
+        }
+    };
 
-//     let numPage = Math.ceil(allDrivers.length / 9)
+    const renderPageNumbers = () => {
+        const pageNumbers = [];
+        const currentBatch = Math.floor((page - 1) / pagesPerBatch); //0
+        const start = currentBatch * pagesPerBatch + 1;               //1
+        const end = Math.min(start + pagesPerBatch - 1, numPage);     //10
 
-//     useEffect(() => {
-//         if (page <= 10) {
-//             setOffSet(0);
-//         } else if (page <= 20) {
-//             setOffSet(10);
-//         } else if (page <= 30) {
-//             setOffSet(20);
-//         } else if (page <= 40) {
-//             setOffSet(30);
-//         } else if (page <= 50) {
-//             setOffSet(40);
-//         } else if (page <= 57) {
-//           setOffSet(50);
-//         }
-//     }, [page])
+        // Botones del lote actual
+        for (let i = start; i <= end; i++) {
+            pageNumbers.push(
+                <button 
+                    key={i} 
+                    className={i === page ? 'active' : ''} 
+                    onClick={() => handlePageChange(i)}
+                >
+                    {i}
+                </button>
+            );
+        }
 
+        // Botones adicionales para avanzar rápidamente, si están fuera del lote actual
+        for (let i = 10; i <= numPage; i += 10) {
+            if (i > end) {
+                pageNumbers.push(
+                    <button 
+                        key={i} 
+                        className={i === page ? 'active' : ''} 
+                        onClick={() => handlePageChange(i)}
+                    >
+                        {i}
+                    </button>
+                );
+            }
+        }
 
-//     function menos(page) {
-//         if (page > 1) setPage(page - 1)
-//         if (page < 1) setPage(1)
-//     }
-//     function mas(page) {
-//         if (page < numPage) setPage(page + 1)
-//         if (page > numPage) setPage(numPage)
-//     }
+        // Botones adicionales para retroceder rápidamente, si están fuera del lote actual
+        for (let i = 10; i <= numPage; i += 10) {
+            if (i < start) {
+                // Encontrar la posición correcta para insertar el botón
+                const insertIndex = pageNumbers.findIndex(
+                    (button) => parseInt(button.key) > i
+                );
+                const newButton = (
+                    <button 
+                        key={i} 
+                        className={i === page ? 'active' : ''} 
+                        onClick={() => handlePageChange(i)}
+                    >
+                        {i}
+                    </button>
+                );
+                if (insertIndex === -1) {
+                    pageNumbers.push(newButton);
+                } else {
+                    pageNumbers.splice(insertIndex, 0, newButton);
+                }
+            }
+        }
+        return pageNumbers;
+    };
 
-//     function showPagina(drivers, page) {
-//         dispatch(getPaginationDrivers(drivers, page))
-//     }
+    return (
+        <div className='paginado'>
+            <Cards pagina={selectPagina} />
+            <button onClick={() => handlePageChange(page - 1)} disabled={page === 1}>Anterior</button>
+            <span>{renderPageNumbers()}</span>
+            <button onClick={() => handlePageChange(page + 1)} disabled={page === numPage}>Siguiente</button>
+        </div>
+    );
+}
 
-//     function numPagina(item) {
-//         setPage(item)
-//     }
-
-//     useEffect(() => {
-//         setPage(1)
-//         function allPaginas(paginas) {
-//             const arreglo = []
-//             for (let i = 1; i <= paginas; i++) {
-//                 arreglo.push(i)
-//             }
-//             setArray(arreglo)
-//         }
-//         allPaginas(numPage)
-//     }, [allDrivers])
-
-//     useEffect(() => {
-//         if (allDrivers.length > 0) {
-//             showPagina(allDrivers, page)
-//         }
-//     }, [allDrivers, page])
-
-//     return (
-//       <div className='paginado'>
-//       <Cards pagina={selectPagina} />
-//       <button onClick={() => { menos(page) }}>Anterior</button>
-//       <span>
-//           {array.length > 0 ? array.slice(offset, offset + 10).map((item) => (
-//               <button className={item == page ? 'active' : ''} onClick={() => numPagina(item)} key={item}>{item}</button>)
-//           ) : '1'}
-//       </span>
-//       <button onClick={() => { mas(page) }}>Siguiente</button>
-//   </div>
-//     )
-// };
-
-// export default Pagination;
+export default Pagination;
